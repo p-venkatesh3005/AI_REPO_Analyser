@@ -1,0 +1,18 @@
+# Web Server & API
+fastapi>=0.100.0
+uvicorn>=0.20.0
+python-multipart>=0.0.6
+pydantic>=2.0.0
+
+# LLM & NLP
+google-generativeai>=0.3.0
+sentence-transformers>=2.2.0
+python-dotenv>=1.0.0
+
+# Vector Database & Retrieval
+chromadb>=0.4.0
+langchain-text-splitters>=0.0.1
+
+# Frontend App
+streamlit>=1.20.0
+requests>=2.28.0
