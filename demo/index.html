@@ -1,0 +1,2684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rythu Raksha – AI-Powered Smart Farming Assistant</title>
+    
+    <!-- Google Fonts: Inter & Outfit for visual superiority -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Vector Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* MODERN AGRITECH DESIGN SYSTEM */
+        :root {
+            --primary: #10b981; /* Premium Emerald */
+            --primary-dark: #065f46; /* Deep Forest */
+            --primary-light: #ecfdf5; /* Mint Glow */
+            --primary-glow: rgba(16, 185, 129, 0.15);
+            --bg-page: #f8fafc; /* Crisp clean slate background */
+            --bg-card: #ffffff;
+            --text-main: #0f172a; /* Slate 900 */
+            --text-muted: #475569; /* Slate 600 */
+            --text-light: #94a3b8; /* Slate 400 */
+            --border-color: #e2e8f0; /* Slate 200 */
+            --border-accent: #a7f3d0; /* Mint border */
+            --success: #22c55e;
+            --warning: #eab308;
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 20px -2px rgba(6, 95, 70, 0.05), 0 2px 8px -1px rgba(0, 0, 0, 0.02);
+            --shadow-lg: 0 20px 25px -5px rgba(6, 95, 70, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
+            --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            font-weight: 700;
+        }
+
+        /* CONTAINER */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* HEADER NAV */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: var(--transition);
+        }
+
+        .header-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--primary-dark);
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .logo i {
+            color: var(--primary);
+            filter: drop-shadow(0 2px 4px var(--primary-glow));
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 0.5rem 0.85rem;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-dark);
+            background-color: var(--primary-light);
+        }
+
+        /* MAIN WRAPPER */
+        main {
+            margin-top: 5rem;
+            min-height: calc(100vh - 12rem);
+        }
+
+        /* SPA VIEW CONTAINERS */
+        .view-section {
+            display: none;
+            animation: viewFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        @keyframes viewFadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* HERO / HOME PAGE */
+        .hero {
+            padding: 4rem 0 3rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-accent);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            line-height: 1.15;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-family: var(--font-body);
+        }
+
+        /* FEATURE CARDS GRID */
+        .feature-grid {
+            display: grid;
+            grid-template-cols: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        .feature-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem 2rem;
+            text-align: left;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--border-accent);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-md);
+            background-color: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feat-icon {
+            background-color: var(--primary);
+            color: #ffffff;
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .feature-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-btn {
+            color: var(--primary-dark);
+            transform: translateX(5px);
+        }
+
+        /* BUTTONS SYSTEM */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.75rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-family: var(--font-display);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            outline: none;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #059669 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: #ffffff;
+            color: var(--primary-dark);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-light);
+            border-color: var(--border-accent);
+            transform: translateY(-2px);
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            border-radius: var(--radius-sm);
+        }
+
+        /* FORMS SYSTEM */
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-cols: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-control {
+            width: 100%;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            padding: 0.85rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            outline: none;
+            background-color: #ffffff;
+            transition: var(--transition);
+        }
+
+        .input-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+
+        /* FEATURE 1: CROP PREDICTION OUTPUT */
+        .crop-layout {
+            display: grid;
+            grid-template-cols: 1fr 1.2fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .crop-results-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            min-height: 400px;
+        }
+
+        .result-empty {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 4rem 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            background-color: var(--bg-card);
+        }
+
+        .result-empty i {
+            font-size: 3rem;
+            color: var(--primary);
+            opacity: 0.4;
+            margin-bottom: 1.5rem;
+        }
+
+        .result-crop-list {
+            display: none;
+            flex-direction: column;
+            gap: 1.5rem;
+            animation: viewFadeIn 0.5s ease forwards;
+        }
+
+        .crop-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 1.5rem;
+            position: relative;
+        }
+
+        .crop-card:hover {
+            border-color: var(--border-accent);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .crop-icon-badge {
+            font-size: 2.5rem;
+            width: 70px;
+            height: 70px;
+            background-color: var(--primary-light);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .crop-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .crop-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .crop-name {
+            font-size: 1.6rem;
+            color: var(--primary-dark);
+        }
+
+        .crop-profit-tag {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            font-weight: 700;
+            padding: 0.35rem 0.85rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            border: 1px solid var(--border-accent);
+        }
+
+        .crop-stat-grid {
+            display: grid;
+            grid-template-cols: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .crop-stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .crop-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .crop-stat-value {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .crop-actions-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* FEATURE 2: DISEASE DETECTION */
+        .disease-layout {
+            display: grid;
+            grid-template-cols: 1fr 1.2fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .upload-area {
+            border: 2px dashed #cbd5e1;
+            background-color: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.25rem;
+        }
+
+        .upload-area:hover, .upload-area.dragover {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .upload-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .upload-area:hover .upload-icon {
+            transform: scale(1.1);
+        }
+
+        .upload-text h4 {
+            font-size: 1.15rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.35rem;
+        }
+
+        .upload-text p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .sample-photos-row {
+            width: 100%;
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+
+        .sample-photos-row p {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .sample-grid {
+            display: grid;
+            grid-template-cols: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
+
+        .sample-item {
+            border: 1px solid var(--border-color);
+            background-color: #f1f5f9;
+            border-radius: var(--radius-sm);
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.35rem;
+            text-align: center;
+        }
+
+        .sample-item:hover {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .sample-item.selected {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .sample-item img {
+            width: 100%;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .sample-item span {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        /* IMAGE PREVIEW CONTAINER */
+        .preview-box {
+            display: none;
+            width: 100%;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 1.5rem;
+            background-color: #000000;
+        }
+
+        .preview-box img {
+            width: 100%;
+            max-height: 250px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .remove-preview-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background-color: rgba(15, 23, 42, 0.8);
+            border: none;
+            color: #ffffff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .remove-preview-btn:hover {
+            background-color: #ef4444;
+            transform: scale(1.1);
+        }
+
+        /* SCANNING SCANNER EFFECT */
+        .scanner-line {
+            display: none;
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(180deg, rgba(16,185,129,0) 0%, var(--primary) 50%, rgba(16,185,129,0) 100%);
+            box-shadow: 0 0 10px var(--primary);
+            z-index: 10;
+            animation: scanningEffect 2s ease-in-out infinite;
+        }
+
+        @keyframes scanningEffect {
+            0% { top: 0%; }
+            50% { top: 95%; }
+            100% { top: 0%; }
+        }
+
+        /* DISEASE RESULTS DISPLAY */
+        .disease-results-panel {
+            display: none;
+            animation: viewFadeIn 0.5s ease forwards;
+        }
+
+        .diagnosis-header-card {
+            background-color: var(--primary-light);
+            border: 1px solid var(--border-accent);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .diagnosis-label h3 {
+            font-size: 1.75rem;
+            color: var(--primary-dark);
+        }
+
+        .diagnosis-label span {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .confidence-circle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: var(--bg-card);
+            border: 4px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-weight: 800;
+            color: var(--primary-dark);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .confidence-circle span {
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+        }
+
+        .pesticide-recommendation-title {
+            font-size: 1.25rem;
+            color: var(--primary-dark);
+            margin: 2rem 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pesticide-grid {
+            display: grid;
+            grid-template-cols: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .pesticide-card {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .pesticide-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--border-accent);
+            box-shadow: var(--shadow-md);
+        }
+
+        .pesticide-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            background-color: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem auto;
+            font-size: 1.25rem;
+        }
+
+        .pesticide-card h4 {
+            font-size: 1rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .pesticide-card span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: block;
+        }
+
+        .pesticide-order-btn {
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .treatment-details-grid {
+            display: grid;
+            grid-template-cols: repeat(3, 1fr);
+            gap: 1.25rem;
+        }
+
+        .treatment-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .treatment-card h4 {
+            font-size: 1.05rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .treatment-card p, .treatment-card li {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .treatment-card ul {
+            padding-left: 1rem;
+        }
+
+        /* FEATURE 3: FARMER COMMUNITY */
+        .forum-layout {
+            display: grid;
+            grid-template-cols: 1.7fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .reward-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 6.5rem;
+        }
+
+        .reward-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .reward-title h3 {
+            font-size: 1.2rem;
+            color: var(--primary-dark);
+        }
+
+        .reward-title p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .reputation-score-box {
+            background-color: var(--primary-light);
+            border: 1px solid var(--border-accent);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .reputation-score-box h4 {
+            font-size: 2.25rem;
+            color: var(--primary-dark);
+            line-height: 1;
+        }
+
+        .reputation-score-box span {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .rewards-milestones {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .milestone-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+        }
+
+        .milestone-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background-color: #f1f5f9;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            z-index: 2;
+        }
+
+        .milestone-item.unlocked .milestone-icon {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary);
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+        }
+
+        .milestone-details {
+            flex-grow: 1;
+        }
+
+        .milestone-details h5 {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .milestone-details p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .milestone-badge {
+            background-color: #f1f5f9;
+            color: var(--text-light);
+            font-size: 0.75rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .milestone-item.unlocked .milestone-badge {
+            background-color: var(--success);
+            color: #ffffff;
+        }
+
+        /* MILIESTONE VERTICAL PROGRESS LINE */
+        .milestone-line-progress {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            bottom: -30px;
+            width: 2px;
+            background-color: #e2e8f0;
+            z-index: 1;
+        }
+
+        .forum-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .forum-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .forum-card:hover {
+            box-shadow: var(--shadow-lg);
+            border-color: var(--border-accent);
+        }
+
+        .forum-post-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .farmer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        .farmer-info {
+            flex-grow: 1;
+        }
+
+        .farmer-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .helpful-badge {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.15rem 0.5rem;
+            border-radius: 50px;
+            border: 1px solid var(--border-accent);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .post-time {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .forum-post-content h4 {
+            font-size: 1.25rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .forum-post-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .forum-reply-box {
+            background-color: #f8fafc;
+            border-left: 3px solid var(--primary);
+            padding: 1rem;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .forum-reply-box p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .forum-reply-box .replier {
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .forum-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+        }
+
+        .action-btn-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .forum-action-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0.4rem 0.75rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .forum-action-btn:hover {
+            color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .forum-action-btn.upvoted {
+            color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .solved-badge-pill {
+            display: none;
+            align-items: center;
+            gap: 0.25rem;
+            background-color: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            animation: viewFadeIn 0.3s ease;
+        }
+
+        .solved-badge-pill.active {
+            display: inline-flex;
+        }
+
+        .solved-btn {
+            color: var(--success);
+        }
+
+        .solved-btn:hover {
+            background-color: rgba(34, 197, 94, 0.1);
+        }
+
+        /* NEW POST MODAL CONTAINER / DRAWER */
+        .forum-new-post-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .forum-new-post-card h3 {
+            font-size: 1.35rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* BOTTOM SECTION: HOW IT WORKS */
+        .how-it-works-sec {
+            background-color: #ffffff;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 6.5rem 0;
+            margin: 6rem 0 0 0;
+        }
+
+        .section-title {
+            text-align: center;
+            max-width: 650px;
+            margin: 0 auto 4.5rem auto;
+        }
+
+        .section-title h2 {
+            font-size: 2.25rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        .timeline-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline-step {
+            flex: 1;
+            text-align: center;
+            background-color: var(--bg-page);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 2rem 1.5rem;
+            box-shadow: var(--shadow-sm);
+            z-index: 2;
+            position: relative;
+            max-width: 200px;
+            transition: var(--transition);
+        }
+
+        .timeline-step:hover {
+            transform: translateY(-5px);
+            border-color: var(--border-accent);
+            box-shadow: var(--shadow-md);
+        }
+
+        .timeline-step-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.25rem auto;
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .timeline-step:hover .timeline-step-icon {
+            background-color: var(--primary);
+            color: #ffffff;
+        }
+
+        .timeline-step h3 {
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-step p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .timeline-arrow {
+            color: var(--primary);
+            opacity: 0.5;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            animation: bounceArrow 2s infinite;
+        }
+
+        @keyframes bounceArrow {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(6px); }
+        }
+
+        /* TOAST ALERT BANNER */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            z-index: 10000;
+        }
+
+        .toast {
+            background-color: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(8px);
+            color: #ffffff;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-left: 4px solid var(--primary);
+            transform: translateX(120%);
+            animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes toastSlideIn {
+            to { transform: translateX(0); }
+        }
+
+        .toast.success {
+            border-left-color: var(--success);
+        }
+
+        .toast.warning {
+            border-left-color: var(--warning);
+        }
+
+        /* MODAL OVERLAYS */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background-color: #ffffff;
+            border: 1px solid var(--border-accent);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 500px;
+            padding: 2.5rem;
+            position: relative;
+            box-shadow: var(--shadow-lg);
+            animation: modalPop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.9) translateY(20px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close-btn:hover {
+            color: var(--text-main);
+            transform: scale(1.1);
+        }
+
+        /* CROP DETAIL MODAL DRAWER */
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .detail-val {
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: #ffffff;
+            border-top: 1px solid var(--border-color);
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        footer .logo {
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        footer p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        footer span {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* LOADING SPINNER IN-BUTTONS & IN-SECTIONS */
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 3px solid #ffffff;
+            width: 18px;
+            height: 18px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        .spinner-dark {
+            border: 3px solid rgba(16,185,129,0.1);
+            border-top: 3px solid var(--primary);
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* RESPONSIVE LAYOUTS */
+        @media (max-width: 992px) {
+            .feature-grid {
+                grid-template-cols: 1fr;
+                gap: 1.5rem;
+            }
+            .crop-layout, .disease-layout, .forum-layout {
+                grid-template-cols: 1fr;
+                gap: 2.5rem;
+            }
+            .timeline-flow {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            .timeline-arrow {
+                transform: rotate(90deg);
+                padding: 0.5rem 0;
+                animation: bounceArrowDown 2s infinite;
+            }
+            @keyframes bounceArrowDown {
+                0%, 100% { transform: translateY(0) rotate(90deg); }
+                50% { transform: translateY(6px) rotate(90deg); }
+            }
+            .timeline-step {
+                max-width: 100%;
+            }
+            .form-grid {
+                grid-template-cols: 1fr;
+            }
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            .reputation-score-box {
+                margin-top: 2rem;
+            }
+            .reward-panel {
+                position: relative;
+                top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- FLOATING BLURRY HEADER -->
+    <header>
+        <div class="container header-wrap">
+            <a onclick="showView('home')" class="logo">
+                <i data-lucide="sprout"></i>
+                <span>Rythu Raksha</span>
+            </a>
+            <nav>
+                <a onclick="showView('home')" id="nav-home" class="nav-link active">Home</a>
+                <a onclick="showView('crop')" id="nav-crop" class="nav-link">Crop Prediction</a>
+                <a onclick="showView('disease')" id="nav-disease" class="nav-link">Disease Diagnosis</a>
+                <a onclick="showView('community')" id="nav-community" class="nav-link">Farmer Community</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- SPA VIEW SWITCHER CONTAINER -->
+    <main class="container">
+        
+        <!-- ============================================== -->
+        <!-- VIEW 1: HOME PANEL -->
+        <!-- ============================================== -->
+        <section id="view-home" class="view-section active">
+            <div class="hero">
+                <div class="hero-badge">
+                    <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
+                    Smart Indian Farming Assistant
+                </div>
+                <h1>🌱 <span>Rythu Raksha</span><br>AI-Powered Farming Decided Smarter</h1>
+                <p>Equipping rural farmers with next-gen agronomic data engines to maximize crop yield profiles, treat crop disease, and share localized knowledge in real time.</p>
+                <button onclick="showView('crop')" class="btn btn-primary">
+                    Launch Assistant <i data-lucide="arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- THREE CORE INTERACTIVE FEATURES CARDS -->
+            <div class="feature-grid">
+                <!-- Card 1: Crop Prediction -->
+                <div class="feature-card" onclick="showView('crop')">
+                    <div class="feat-icon">
+                        <i data-lucide="wheat" style="width: 28px; height: 28px;"></i>
+                    </div>
+                    <div>
+                        <h3>Crop Prediction</h3>
+                        <p>Evaluate soil variables, moisture, and local weather patterns to dynamically predict high-yielding crops for your farmland acres.</p>
+                    </div>
+                    <span class="feature-btn">Open Predictor <i data-lucide="chevron-right"></i></span>
+                </div>
+
+                <!-- Card 2: Disease & Pesticide -->
+                <div class="feature-card" onclick="showView('disease')">
+                    <div class="feat-icon">
+                        <i data-lucide="flask-conical" style="width: 28px; height: 28px;"></i>
+                    </div>
+                    <div>
+                        <h3>Disease & Pesticides</h3>
+                        <p>Upload scans of crop foliage to instantly isolate leaf blight or spots and retrieve precise biological/chemical remedies.</p>
+                    </div>
+                    <span class="feature-btn">Diagnose Crop <i data-lucide="chevron-right"></i></span>
+                </div>
+
+                <!-- Card 3: Farmer Community -->
+                <div class="feature-card" onclick="showView('community')">
+                    <div class="feat-icon">
+                        <i data-lucide="users" style="width: 28px; height: 28px;"></i>
+                    </div>
+                    <div>
+                        <h3>Farmer Community</h3>
+                        <p>Share local field updates, collaborate with neighboring experts, mark posts as solved, and earn coupon rewards.</p>
+                    </div>
+                    <span class="feature-btn">Join Forum <i data-lucide="chevron-right"></i></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- VIEW 2: CROP PREDICTION -->
+        <!-- ============================================== -->
+        <section id="view-crop" class="view-section">
+            <div class="hero" style="padding: 2rem 0; margin-bottom: 2rem;">
+                <h1>🌾 Crop Yield Predictor</h1>
+                <p>Input regional soil variables and land attributes to calculate optimal expected yield rates.</p>
+            </div>
+
+            <div class="crop-layout">
+                <!-- Prediction inputs form card -->
+                <div class="card">
+                    <form id="crop-predict-form" onsubmit="handleCropPrediction(event)">
+                        <div class="form-grid">
+                            
+                            <div class="form-group">
+                                <label for="crop-loc">Farmland Region</label>
+                                <select id="crop-loc" class="input-control" required>
+                                    <option value="Andhra Pradesh">Andhra Pradesh (Krishna Delta)</option>
+                                    <option value="Telangana">Telangana (Red Soil Deccan)</option>
+                                    <option value="Punjab">Punjab (Indo-Gangetic Basin)</option>
+                                    <option value="Maharashtra">Maharashtra (Black Clay Region)</option>
+                                    <option value="Karnataka">Karnataka (Southern Plateau)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="crop-soil">Soil Texture Profile</label>
+                                <select id="crop-soil" class="input-control" required>
+                                    <option value="Loamy Silt">Loamy Silt Soil</option>
+                                    <option value="Black Clayey">Black Heavy Clayey</option>
+                                    <option value="Alluvial Silt">Alluvial Silt Loam</option>
+                                    <option value="Red Sandy Loam">Red Sandy Loam</option>
+                                    <option value="Laterite Earth">Laterite Gravelly Earth</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="crop-season">Active Sowing Season</label>
+                                <select id="crop-season" class="input-control" required>
+                                    <option value="Kharif">Kharif (Monsoon Season)</option>
+                                    <option value="Rabi">Rabi (Winter Dry Cycle)</option>
+                                    <option value="Zaid">Zaid (Summer Short Term)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="crop-rain">Rainfall Levels</label>
+                                <select id="crop-rain" class="input-control" required>
+                                    <option value="High">High Precipitation (>1200mm)</option>
+                                    <option value="Medium">Medium Wet (600mm - 1200mm)</option>
+                                    <option value="Low">Low Precipitation (<600mm)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label for="crop-size">Land Size Area (Acres)</label>
+                                <input type="number" id="crop-size" class="input-control" min="1" max="100" value="5" required>
+                            </div>
+
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;" id="predict-crop-btn">
+                            Predict Optimal Crops <i data-lucide="cpu"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Simulation results panel -->
+                <div class="crop-results-container">
+                    <!-- Default state: empty -->
+                    <div id="crop-results-empty" class="result-empty">
+                        <i data-lucide="bar-chart-3"></i>
+                        <h3>Awaiting Farm Parameters</h3>
+                        <p>Fill out the farmland characteristics on the left and select "Predict Optimal Crops" to execute the local AI classifier.</p>
+                    </div>
+
+                    <!-- Loading state: spinner -->
+                    <div id="crop-results-loading" class="result-empty" style="display: none;">
+                        <div class="spinner spinner-dark"></div>
+                        <h3>AI Model Calculating...</h3>
+                        <p>Matching parameters against 14 years of crop yields and regional rainfall registers.</p>
+                    </div>
+
+                    <!-- Calculated state: list -->
+                    <div id="crop-results-list" class="result-crop-list">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <h3 style="color: var(--primary-dark); font-size: 1.35rem;">Recommended Crops</h3>
+                            <button onclick="resetCropForm()" class="btn btn-secondary btn-sm">
+                                <i data-lucide="refresh-cw" style="width: 12px; height: 12px;"></i> Clear Results
+                            </button>
+                        </div>
+                        
+                        <!-- Paddy Card -->
+                        <div class="crop-card">
+                            <div class="crop-icon-badge">🌾</div>
+                            <div class="crop-details">
+                                <div class="crop-header-row">
+                                    <h4 class="crop-name">Paddy (Rice)</h4>
+                                    <span class="crop-profit-tag" id="profit-paddy">₹65,000</span>
+                                </div>
+                                <div class="crop-stat-grid">
+                                    <div class="crop-stat-item">
+                                        <span class="crop-stat-label">Expected Yield</span>
+                                        <span class="crop-stat-value" id="yield-paddy">High (22-26 Q/Acre)</span>
+                                    </div>
+                                    <div class="crop-stat-item">
+                                        <span class="crop-stat-label">Seed Recommendation</span>
+                                        <span class="crop-stat-value">Rythu Gold Hybrid 101</span>
+                                    </div>
+                                    <div class="crop-stat-item">
+                                        <span class="crop-stat-label">Fertilizer Suggestion</span>
+                                        <span class="crop-stat-value">NPK (120:60:60 kg/Ha)</span>
+                                    </div>
+                                    <div class="crop-stat-item">
+                                        <span class="crop-stat-label">Estimated Cost</span>
+                                        <span class="crop-stat-value" id="cost-paddy">₹18,000 / Acre</span>
+                                    </div>
+                                </div>
+                                <div class="crop-actions-row">
+                                    <button onclick="openCropDetail('Paddy')" class="btn btn-secondary btn-sm">View Details</button>
+                                    <button onclick="triggerToast('Successfully added Paddy Seeds to order cart! 🌾')" class="btn btn-primary btn-sm">Buy Seeds</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Maize Card -->
+                        <div class="crop-card">
+                            <div class="crop-icon-badge">🌽</div>
+                            <div class="crop-details">
+                                <div class="crop-header-row">
+                                    <h4 class="crop-name">Maize (Corn)</h4>
+                                    <span class="crop-profit-tag" id="profit-maize">₹42,000</span>
+                                </div>
+                                <div class="crop-stat-grid">
+                                    <div class="crop-stat-item">
+                                        <span class="crop-stat-label">Expected Yield</span>
+                                        <span class="crop-stat-value" id="yield-maize">Medium (18-22 Q/Acre)</span>
+                                    </div>
+                                    <div class="crop-stat-item">
+                                        <span class="crop-stat-label">Seed Recommendation</span>
+                                        <span class="crop-stat-value">Deccan Double-Crest Pro</span>
+                                    </div>
+                                    <div class="crop-stat-item">
+                                        <span class="crop-stat-label">Fertilizer Suggestion</span>
+                                        <span class="crop-stat-value">Urea & Single Superphosphate</span>
+                                    </div>
+                                    <div class="crop-stat-item">
+                                        <span class="crop-stat-label">Estimated Cost</span>
+                                        <span class="crop-stat-value" id="cost-maize">₹12,500 / Acre</span>
+                                    </div>
+                                </div>
+                                <div class="crop-actions-row">
+                                    <button onclick="openCropDetail('Maize')" class="btn btn-secondary btn-sm">View Details</button>
+                                    <button onclick="triggerToast('Successfully added Maize Seeds to order cart! 🌽')" class="btn btn-primary btn-sm">Buy Seeds</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Groundnut Card -->
+                        <div class="crop-card">
+                            <div class="crop-icon-badge">🫘</div>
+                            <div class="crop-details">
+                                <div class="crop-header-row">
+                                    <h4 class="crop-name">Groundnut</h4>
+                                    <span class="crop-profit-tag" id="profit-groundnut">₹55,000</span>
+                                </div>
+                                <div class="crop-stat-grid">
+                                    <div class="crop-stat-item">
+                                        <span class="crop-stat-label">Expected Yield</span>
+                                        <span class="crop-stat-value" id="yield-groundnut">Medium-High (12-15 Q/Ac)</span>
+                                    </div>
+                                    <div class="crop-stat-item">
+                                        <span class="crop-stat-label">Seed Recommendation</span>
+                                        <span class="crop-stat-value">Kadiri Bold Grade-A</span>
+                                    </div>
+                                    <div class="crop-stat-item">
+                                        <span class="crop-stat-label">Fertilizer Suggestion</span>
+                                        <span class="crop-stat-value">Gypsum & Rhizobium Culture</span>
+                                    </div>
+                                    <div class="crop-stat-item">
+                                        <span class="crop-stat-label">Estimated Cost</span>
+                                        <span class="crop-stat-value" id="cost-groundnut">₹15,000 / Acre</span>
+                                    </div>
+                                </div>
+                                <div class="crop-actions-row">
+                                    <button onclick="openCropDetail('Groundnut')" class="btn btn-secondary btn-sm">View Details</button>
+                                    <button onclick="triggerToast('Successfully added Groundnut Seeds to order cart! 🫘')" class="btn btn-primary btn-sm">Buy Seeds</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- VIEW 3: DISEASE & PESTICIDE PREDICTION -->
+        <!-- ============================================== -->
+        <section id="view-disease" class="view-section">
+            <div class="hero" style="padding: 2rem 0; margin-bottom: 2rem;">
+                <h1>🧪 AI Disease & Pesticide Predictor</h1>
+                <p>Instantly diagnose plant symptoms by uploading leaf photos or executing interactive samples.</p>
+            </div>
+
+            <div class="disease-layout">
+                <!-- Upload selector widget -->
+                <div class="card">
+                    <h3 style="color: var(--primary-dark); margin-bottom: 1.5rem; font-size: 1.35rem;">Upload Crop Specimen</h3>
+                    
+                    <!-- Previews inside upload bounds -->
+                    <div id="disease-preview-box" class="preview-box">
+                        <div class="scanner-line" id="scanner-line-bar"></div>
+                        <img id="disease-preview-image" src="" alt="Specimen Preview">
+                        <button type="button" onclick="clearSelectedDiseaseSample()" class="remove-preview-btn">
+                            <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+                        </button>
+                    </div>
+
+                    <div id="disease-upload-area" class="upload-area" onclick="triggerFileInput()">
+                        <div class="upload-icon">
+                            <i data-lucide="camera" style="width: 32px; height: 32px;"></i>
+                        </div>
+                        <div class="upload-text">
+                            <h4>Drag & Drop Foliage Photo</h4>
+                            <p>PNG, JPG up to 10MB (Simulated upload)</p>
+                        </div>
+                        <input type="file" id="disease-file-input" style="display: none;" accept="image/*" onchange="handleDiseaseFileUpload(event)">
+                    </div>
+
+                    <!-- Clickable mock specimens -->
+                    <div class="sample-photos-row">
+                        <p>Or click a sample leaf infected case to load instantly:</p>
+                        <div class="sample-grid">
+                            
+                            <!-- Tomato Spot -->
+                            <div class="sample-item" id="sample-tomato" onclick="loadSampleDisease('tomato')">
+                                <img src="https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?auto=format&fit=crop&w=150&q=80" alt="Tomato Leaf">
+                                <span>Tomato Spot</span>
+                            </div>
+
+                            <!-- Paddy Blast -->
+                            <div class="sample-item" id="sample-paddy" onclick="loadSampleDisease('paddy')">
+                                <img src="https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=150&q=80" alt="Rice Leaf">
+                                <span>Paddy Blast</span>
+                            </div>
+
+                            <!-- Corn Rust -->
+                            <div class="sample-item" id="sample-corn" onclick="loadSampleDisease('corn')">
+                                <img src="https://images.unsplash.com/photo-1551009175-15bdf9dcb580?auto=format&fit=crop&w=150&q=80" alt="Corn Leaf">
+                                <span>Corn Rust</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <button onclick="analyzePlantDisease()" class="btn btn-primary" style="width: 100%; margin-top: 2rem;" id="analyze-plant-btn">
+                        Analyze Plant Foliage <i data-lucide="scan"></i>
+                    </button>
+                </div>
+
+                <!-- Analysis Outcomes panel -->
+                <div class="crop-results-container">
+                    
+                    <!-- Empty State -->
+                    <div id="disease-results-empty" class="result-empty">
+                        <i data-lucide="microscope"></i>
+                        <h3>Awaiting Plant Specimen</h3>
+                        <p>Upload a foliage photograph or pick one of the active sample leaf cards on the left, then click "Analyze Plant Foliage" to calculate diagnosis.</p>
+                    </div>
+
+                    <!-- Scanning State -->
+                    <div id="disease-results-scanning" class="result-empty" style="display: none;">
+                        <div class="spinner spinner-dark"></div>
+                        <h3>Scanning specimen for pathology markers...</h3>
+                        <p>Classifying fungal structures and moisture levels across crop metadata charts.</p>
+                    </div>
+
+                    <!-- Diagnosed Output -->
+                    <div id="disease-results-panel" class="disease-results-panel">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                            <h3 style="color: var(--primary-dark); font-size: 1.35rem;">AI Pathology Diagnosis</h3>
+                            <button onclick="resetDiseaseScreen()" class="btn btn-secondary btn-sm">
+                                <i data-lucide="refresh-cw" style="width: 12px; height: 12px;"></i> Clear Scan
+                            </button>
+                        </div>
+
+                        <!-- Diagnosis Core Card -->
+                        <div class="diagnosis-header-card">
+                            <div class="diagnosis-label">
+                                <span>Detected Pathology</span>
+                                <h3 id="disease-outcome-name">Leaf Spot</h3>
+                            </div>
+                            <div class="confidence-circle">
+                                <span id="disease-outcome-conf">94%</span>
+                                <span>Conf</span>
+                            </div>
+                        </div>
+
+                        <!-- Recommended remedies cards -->
+                        <h4 class="pesticide-recommendation-title">
+                            <i data-lucide="shield-check" style="color: var(--primary);"></i> Recommended Pesticides
+                        </h4>
+                        
+                        <div class="pesticide-grid">
+                            
+                            <!-- Product 1 -->
+                            <div class="pesticide-card">
+                                <div class="pesticide-avatar">💊</div>
+                                <h4 id="pest-prod-1">Product 1</h4>
+                                <span>Organic Bio-Fungicide</span>
+                                <button onclick="triggerToast('Successfully ordered organic fungicide! 💊')" class="btn btn-primary btn-sm pesticide-order-btn">Order</button>
+                            </div>
+
+                            <!-- Product 2 -->
+                            <div class="pesticide-card">
+                                <div class="pesticide-avatar">🛢️</div>
+                                <h4 id="pest-prod-2">Product 2</h4>
+                                <span>Neem Concentrate</span>
+                                <button onclick="triggerToast('Successfully ordered Bio-Neem Extract! 🛢️')" class="btn btn-primary btn-sm pesticide-order-btn">Order</button>
+                            </div>
+
+                            <!-- Product 3 -->
+                            <div class="pesticide-card">
+                                <div class="pesticide-avatar">🧪</div>
+                                <h4 id="pest-prod-3">Product 3</h4>
+                                <span>Mancozeb 75% WP</span>
+                                <button onclick="triggerToast('Successfully ordered Mancozeb! 🧪')" class="btn btn-primary btn-sm pesticide-order-btn">Order</button>
+                            </div>
+
+                        </div>
+
+                        <!-- Detailed Action plans -->
+                        <div class="treatment-details-grid">
+                            <div class="treatment-card">
+                                <h4><i data-lucide="help-circle" style="width: 16px;"></i> How to Use</h4>
+                                <p id="disease-outcome-use">Spray during low sun early mornings. Dilute 15ml of organic product into 10L of fresh canal water buffer.</p>
+                            </div>
+                            <div class="treatment-card">
+                                <h4><i data-lucide="clock" style="width: 16px;"></i> Recovery</h4>
+                                <p id="disease-outcome-rec">Estimated recovery in 10-14 days. Perform follow-up scan in 6 days to log progress parameters.</p>
+                            </div>
+                            <div class="treatment-card">
+                                <h4><i data-lucide="shield" style="width: 16px;"></i> Prevention</h4>
+                                <ul id="disease-outcome-prev">
+                                    <li>Prune infected stems</li>
+                                    <li>Adopt drip schedules</li>
+                                    <li>Enable spacing lines</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- VIEW 4: FARMER COMMUNITY -->
+        <!-- ============================================== -->
+        <section id="view-community" class="view-section">
+            <div class="hero" style="padding: 2rem 0; margin-bottom: 2rem;">
+                <h1>👨🌾 Farmer Community Forum</h1>
+                <p>Collaborate with local farming networks, exchange active field alerts, and earn premium rewards.</p>
+            </div>
+
+            <div class="forum-layout">
+                <!-- Feed section -->
+                <div>
+                    <!-- Post creation form -->
+                    <div class="forum-new-post-card">
+                        <h3><i data-lucide="plus-circle" style="color: var(--primary);"></i> Create New Forum Post</h3>
+                        <form id="new-post-form" onsubmit="handleCreatePost(event)">
+                            <div class="form-group" style="margin-bottom: 1rem;">
+                                <label for="post-title">Topic Subject</label>
+                                <input type="text" id="post-title" class="input-control" placeholder="e.g., Red blight spots seen on Paddy leaves..." required>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 1.5rem;">
+                                <label for="post-desc">Details / Farm Context</label>
+                                <textarea id="post-desc" class="input-control" rows="3" placeholder="Explain soil moisture, active season, region, or crop varieties so others can help..." style="resize: vertical;" required></textarea>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 0.8rem; color: var(--text-light); font-weight: 500;">
+                                    Posting as <strong style="color: var(--primary-dark);">Farmer Prasad (AP)</strong>
+                                </span>
+                                <button type="submit" class="btn btn-primary btn-sm">
+                                    Share Post <i data-lucide="send" style="width: 14px;"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Dynamic Post Feed -->
+                    <div class="forum-feed" id="forum-feed-container">
+                        <!-- Post templates will be appended here dynamically -->
+                    </div>
+                </div>
+
+                <!-- Reward milestones side board -->
+                <div class="reward-panel">
+                    <div class="reward-header">
+                        <i data-lucide="award" style="color: var(--primary); width: 32px; height: 32px;"></i>
+                        <div class="reward-title">
+                            <h3>Farmer Reward Milestones</h3>
+                            <p>Accumulate upvotes from other farmers to unlock exclusive discounts and professional agricultural consultation.</p>
+                        </div>
+                    </div>
+
+                    <!-- Interactive score bar -->
+                    <div class="reputation-score-box">
+                        <h4 id="user-upvotes-total">12</h4>
+                        <span>Total Earned Upvotes</span>
+                        <div style="margin-top: 1rem;">
+                            <button onclick="simulateUpvoteMyPost()" class="btn btn-secondary btn-sm" style="font-size: 0.75rem; padding: 0.35rem 0.75rem; width: 100%;">
+                                <i data-lucide="arrow-up-circle" style="width: 14px;"></i> Simulate Upvote on My Post
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Milestones tracking list -->
+                    <div class="rewards-milestones">
+                        
+                        <!-- Milestone 1 -->
+                        <div class="milestone-item unlocked" id="ms-1">
+                            <div class="milestone-line-progress"></div>
+                            <div class="milestone-icon">🏷️</div>
+                            <div class="milestone-details">
+                                <h5>Discount Coupons</h5>
+                                <p>15% Off Organic Seeds & Fertilizers</p>
+                            </div>
+                            <span class="milestone-badge" id="ms-badge-1">Unlocked</span>
+                        </div>
+
+                        <!-- Milestone 2 -->
+                        <div class="milestone-item" id="ms-2">
+                            <div class="milestone-line-progress"></div>
+                            <div class="milestone-icon">📞</div>
+                            <div class="milestone-details">
+                                <h5>Free Agri Consultation</h5>
+                                <p>Direct phone hotline to Agri University Scientist</p>
+                            </div>
+                            <span class="milestone-badge" id="ms-badge-2">Locked</span>
+                        </div>
+
+                        <!-- Milestone 3 -->
+                        <div class="milestone-item" id="ms-3">
+                            <div class="milestone-icon">🌟</div>
+                            <div class="milestone-details">
+                                <h5>Premium Farmer Badge</h5>
+                                <p>Unlocks official mentor status on portal forum</p>
+                            </div>
+                            <span class="milestone-badge" id="ms-badge-3">Locked</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ============================================== -->
+    <!-- TIMELINE FLOW SECTION -->
+    <!-- ============================================== -->
+    <section class="how-it-works-sec">
+        <div class="container">
+            <div class="section-title">
+                <h2>How It Works</h2>
+                <p>Four automated agritech pipelines coordinating to safeguard and optimize agricultural yields.</p>
+            </div>
+            
+            <div class="timeline-flow">
+                
+                <!-- Step 1 -->
+                <div class="timeline-step">
+                    <div class="timeline-step-icon">
+                        <i data-lucide="sliders"></i>
+                    </div>
+                    <h3>Input</h3>
+                    <p>Enter local coordinates, soil profile textures, and active seasons.</p>
+                </div>
+
+                <div class="timeline-arrow">
+                    <i data-lucide="chevron-right"></i>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="timeline-step">
+                    <div class="timeline-step-icon">
+                        <i data-lucide="cpu"></i>
+                    </div>
+                    <h3>AI Analysis</h3>
+                    <p>Ensembles algorithms benchmark variables against historical indices.</p>
+                </div>
+
+                <div class="timeline-arrow">
+                    <i data-lucide="chevron-right"></i>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="timeline-step">
+                    <div class="timeline-step-icon">
+                        <i data-lucide="sparkles"></i>
+                    </div>
+                    <h3>Recommendations</h3>
+                    <p>Provides customized seed lists, optimal watering and pesticide treatment paths.</p>
+                </div>
+
+                <div class="timeline-arrow">
+                    <i data-lucide="chevron-right"></i>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="timeline-step">
+                    <div class="timeline-step-icon">
+                        <i data-lucide="tractor"></i>
+                    </div>
+                    <h3>Farmer Action</h3>
+                    <p>Order validated seeds, fertilize optimally, and clear crop path pests.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- GLOBAL FOOTER -->
+    <!-- ============================================== -->
+    <footer>
+        <div class="container">
+            <a href="#" class="logo">
+                <i data-lucide="sprout"></i>
+                <span>Rythu Raksha</span>
+            </a>
+            <p>Smart Farming with AI</p>
+            <span>© 2026 Rythu Raksha. Single-file interactive executive prototype staging.</span>
+        </div>
+    </footer>
+
+    <!-- TOAST POPUP NOTIFICATION WRAPPER -->
+    <div class="toast-container" id="toast-bin"></div>
+
+    <!-- DETAIL DRAWER MODAL OVERLAY -->
+    <div class="modal-overlay" id="detail-modal" onclick="closeCropDetail(event)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <button class="modal-close-btn" onclick="closeCropDetail()"><i data-lucide="x"></i></button>
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <div id="modal-crop-emoji" style="font-size: 3rem; margin-bottom: 0.5rem;">🌾</div>
+                <h3 id="modal-crop-title" style="font-size: 1.8rem; color: var(--primary-dark);">Paddy Details</h3>
+                <p style="color: var(--text-light); font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Agronomic Profile Card</p>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 2rem;">
+                <div class="detail-row">
+                    <span class="detail-label">Optimal Sowing Depth</span>
+                    <span class="detail-val" id="modal-sow-depth">3 - 5 cm</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Water Intake Schedule</span>
+                    <span class="detail-val" id="modal-water-schedule">Flood (5-7 cm continuous buffer)</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Maturity Timeline</span>
+                    <span class="detail-val" id="modal-maturity">115 - 125 Sowing Days</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Primary Climatic Risks</span>
+                    <span class="detail-val" id="modal-clim-risk">Low Rainfall / Paddy Stem Borers</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Yield Forecast Accuracy</span>
+                    <span class="detail-val">96.8% (Historical Ensembles)</span>
+                </div>
+            </div>
+
+            <button onclick="closeCropDetail()" class="btn btn-primary" style="width: 100%;">Acknowledge & Close</button>
+        </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- INTERACTIVE JAVASCRIPT SYSTEM -->
+    <!-- ============================================== -->
+    <script>
+        // INITIALIZE STATIC FORUM DATA BASE
+        let forumPosts = [
+            {
+                id: 1,
+                author: "Farmer Ramakrishna (Telangana)",
+                avatarInit: "R",
+                solved: true,
+                helpful: true,
+                title: "Leaves turning yellow in early Kharif",
+                body: "My crop leaves have started turning a pale yellow shade from the lower base up. The soil moisture looks okay, what urea dosage should I add?",
+                replyAuthor: "Agri-Scientist Suresh (ANGRAU)",
+                replyContent: "This suggests a primary Nitrogen Deficiency. Since it is Kharif, avoid flooding immediately. Apply broad-spread Urea at 45kg/acre during early morning hours and check drainage channels.",
+                votes: 12,
+                userUpvoted: false
+            },
+            {
+                id: 2,
+                author: "Farmer Somanna (Karnataka)",
+                avatarInit: "S",
+                solved: false,
+                helpful: false,
+                title: "Brown spot clusters on maize foliage",
+                body: "Spotted concentric brown dots spreading across 2 acres of maize plants. Sown 40 days back in red loamy sand. Is this pests or fungal spots?",
+                replyAuthor: "Farmer Venkat (Coimbatore)",
+                replyContent: "This looks like Fungal Leaf Spot! High humidity accelerates it. Prune infected stems instantly and spray a light organic Copper fungicide.",
+                votes: 8,
+                userUpvoted: false
+            }
+        ];
+
+        // USER INTERNAL STATE Tracker
+        let userUpvoteCount = 12;
+
+        // SPA NAVIGATION SYSTEM
+        function showView(viewName) {
+            // Remove active classes from all sections and header links
+            document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            
+            // Set active targets
+            document.getElementById('view-' + viewName).classList.add('active');
+            const navLink = document.getElementById('nav-' + viewName);
+            if (navLink) navLink.classList.add('active');
+            
+            // Scroll to top smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // INITIALIZATION
+        window.addEventListener('DOMContentLoaded', () => {
+            // Render icons
+            lucide.createIcons();
+            // Load forum feed
+            renderForumFeed();
+            // Sync reputation tracker levels
+            updateReputationMilestones();
+        });
+
+        // TOAST NOTIFICATIONS BINDER
+        function triggerToast(message, type = 'success') {
+            const toastBin = document.getElementById('toast-bin');
+            
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const iconName = type === 'success' ? 'check-circle' : 'alert-triangle';
+            toast.innerHTML = `
+                <i data-lucide="${iconName}"></i>
+                <span>${message}</span>
+            `;
+            
+            toastBin.appendChild(toast);
+            lucide.createIcons();
+            
+            // Slide away and delete after timeout
+            setTimeout(() => {
+                toast.style.animation = 'viewFadeIn 0.3s ease reverse forwards';
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // ==============================================
+        // FEATURE 1: CROP PREDICTION LOGIC
+        // ==============================================
+        function handleCropPrediction(event) {
+            event.preventDefault();
+            
+            // Show scanning state
+            document.getElementById('crop-results-empty').style.display = 'none';
+            document.getElementById('crop-results-list').style.display = 'none';
+            document.getElementById('crop-results-loading').style.display = 'flex';
+            
+            // Gather input fields
+            const region = document.getElementById('crop-loc').value;
+            const soil = document.getElementById('crop-soil').value;
+            const season = document.getElementById('crop-season').value;
+            const rain = document.getElementById('crop-rain').value;
+            const acres = parseFloat(document.getElementById('crop-size').value) || 1;
+            
+            // Dynamic parameters recalculation
+            setTimeout(() => {
+                // Mock calculation formulas scaled by acreage
+                let profitMultiplier = 1;
+                if (region === "Punjab") profitMultiplier = 1.15;
+                if (region === "Telangana") profitMultiplier = 0.95;
+                if (rain === "Low") profitMultiplier *= 0.85;
+
+                const basePaddyProfit = 65000 * acres * profitMultiplier;
+                const baseMaizeProfit = 42000 * acres * profitMultiplier;
+                const baseGroundnutProfit = 55000 * acres * profitMultiplier;
+                
+                // Set text fields
+                document.getElementById('profit-paddy').innerText = `₹${Math.round(basePaddyProfit).toLocaleString('en-IN')}`;
+                document.getElementById('profit-maize').innerText = `₹${Math.round(baseMaizeProfit).toLocaleString('en-IN')}`;
+                document.getElementById('profit-groundnut').innerText = `₹${Math.round(baseGroundnutProfit).toLocaleString('en-IN')}`;
+
+                document.getElementById('cost-paddy').innerText = `₹${Math.round(18000 * acres).toLocaleString('en-IN')} Total Cost`;
+                document.getElementById('cost-maize').innerText = `₹${Math.round(12500 * acres).toLocaleString('en-IN')} Total Cost`;
+                document.getElementById('cost-groundnut').innerText = `₹${Math.round(15000 * acres).toLocaleString('en-IN')} Total Cost`;
+                
+                // Adjust yield text depending on rainfall levels
+                if (rain === "Low") {
+                    document.getElementById('yield-paddy').innerText = "Low (12-14 Q/Acre)";
+                    document.getElementById('yield-maize').innerText = "Medium-Low (10-12 Q/Ac)";
+                    document.getElementById('yield-groundnut').innerText = "High (15-18 Q/Acre)"; // Groundnut handles drought better
+                } else if (rain === "High") {
+                    document.getElementById('yield-paddy').innerText = "V. High (26-30 Q/Acre)";
+                    document.getElementById('yield-maize').innerText = "High (20-24 Q/Acre)";
+                    document.getElementById('yield-groundnut').innerText = "Low (6-8 Q/Acre - Rot Risk)";
+                } else {
+                    document.getElementById('yield-paddy').innerText = "High (22-26 Q/Acre)";
+                    document.getElementById('yield-maize').innerText = "Medium (18-22 Q/Acre)";
+                    document.getElementById('yield-groundnut').innerText = "Medium-High (12-15 Q/Ac)";
+                }
+
+                // Hide spinner and display results
+                document.getElementById('crop-results-loading').style.display = 'none';
+                document.getElementById('crop-results-list').style.display = 'flex';
+                
+                triggerToast('Optimal crop yield algorithms calculated successfully! 🌾');
+            }, 1000);
+        }
+
+        function resetCropForm() {
+            document.getElementById('crop-predict-form').reset();
+            document.getElementById('crop-results-list').style.display = 'none';
+            document.getElementById('crop-results-empty').style.display = 'flex';
+            triggerToast('Parameters and crop simulations reset.', 'warning');
+        }
+
+        // CROP DETAIL EXPANSION DRAWER
+        function openCropDetail(cropType) {
+            const modal = document.getElementById('detail-modal');
+            const title = document.getElementById('modal-crop-title');
+            const emoji = document.getElementById('modal-crop-emoji');
+            
+            const sowDepth = document.getElementById('modal-sow-depth');
+            const waterSchedule = document.getElementById('modal-water-schedule');
+            const maturity = document.getElementById('modal-maturity');
+            const climRisk = document.getElementById('modal-clim-risk');
+            
+            if (cropType === 'Paddy') {
+                emoji.innerText = "🌾";
+                title.innerText = "Paddy (Rice) Profile";
+                sowDepth.innerText = "3 - 5 cm";
+                waterSchedule.innerText = "Flood-Irrigated (5-7 cm steady level)";
+                maturity.innerText = "115 - 125 Sowing Days";
+                climRisk.innerText = "Drought vulnerability / Fungal Leaf Blast risks";
+            } else if (cropType === 'Maize') {
+                emoji.innerText = "🌽";
+                title.innerText = "Maize (Corn) Profile";
+                sowDepth.innerText = "5 - 7 cm";
+                waterSchedule.innerText = "Furrow Irrigation (Moderate frequency)";
+                maturity.innerText = "90 - 110 Sowing Days";
+                climRisk.innerText = "Water logging hazards / Armyworm pest damage";
+            } else if (cropType === 'Groundnut') {
+                emoji.innerText = "🫘";
+                title.innerText = "Groundnut Profile";
+                sowDepth.innerText = "4 - 5 cm";
+                waterSchedule.innerText = "Sprinkler Schedule (Low-moisture focus)";
+                maturity.innerText = "105 - 115 Sowing Days";
+                climRisk.innerText = "Excess rains cause pod rot / Rust infection";
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeCropDetail() {
+            document.getElementById('detail-modal').classList.remove('active');
+        }
+
+        // ==============================================
+        // FEATURE 2: DISEASE & PESTICIDE LOGIC
+        // ==============================================
+        let selectedPathology = null;
+
+        function triggerFileInput() {
+            // Only click file input if no photo is currently selected
+            if (!selectedPathology) {
+                document.getElementById('disease-file-input').click();
+            }
+        }
+
+        // Simulate choosing standard file uploads
+        function handleDiseaseFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    displaySpecimenPreview(e.target.result);
+                    // Select default Tomato parameters since it's a generic upload
+                    selectedPathology = 'tomato';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Click standard specimens
+        function loadSampleDisease(type) {
+            // Reset active styles
+            document.querySelectorAll('.sample-item').forEach(item => item.classList.remove('selected'));
+            
+            // Add active target
+            document.getElementById('sample-' + type).classList.add('selected');
+            
+            let imageUrl = "";
+            if (type === 'tomato') {
+                imageUrl = "https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?auto=format&fit=crop&w=600&q=80";
+            } else if (type === 'paddy') {
+                imageUrl = "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=600&q=80";
+            } else if (type === 'corn') {
+                imageUrl = "https://images.unsplash.com/photo-1551009175-15bdf9dcb580?auto=format&fit=crop&w=600&q=80";
+            }
+            
+            displaySpecimenPreview(imageUrl);
+            selectedPathology = type;
+            triggerToast(`Specimen leaf samples loaded! Click "Analyze Plant Foliage".`);
+        }
+
+        function displaySpecimenPreview(sourceUrl) {
+            document.getElementById('disease-upload-area').style.display = 'none';
+            
+            const previewBox = document.getElementById('disease-preview-box');
+            const previewImage = document.getElementById('disease-preview-image');
+            
+            previewImage.src = sourceUrl;
+            previewBox.style.display = 'block';
+        }
+
+        function clearSelectedDiseaseSample() {
+            document.getElementById('disease-preview-box').style.display = 'none';
+            document.getElementById('disease-upload-area').style.display = 'flex';
+            document.getElementById('disease-file-input').value = "";
+            
+            document.querySelectorAll('.sample-item').forEach(item => item.classList.remove('selected'));
+            selectedPathology = null;
+        }
+
+        function analyzePlantDisease() {
+            if (!selectedPathology) {
+                triggerToast('Please choose one of the leaf samples or upload a file first!', 'warning');
+                return;
+            }
+            
+            // Active visual scanner line over specimen preview
+            const scanner = document.getElementById('scanner-line-bar');
+            scanner.style.display = 'block';
+            
+            // Display scanning panel
+            document.getElementById('disease-results-empty').style.display = 'none';
+            document.getElementById('disease-results-panel').style.display = 'none';
+            document.getElementById('disease-results-scanning').style.display = 'flex';
+            
+            setTimeout(() => {
+                // Clear active scanner line
+                scanner.style.display = 'none';
+                
+                // Populate diagnostic panels depending on selected specimen
+                const outcomeName = document.getElementById('disease-outcome-name');
+                const outcomeConf = document.getElementById('disease-outcome-conf');
+                
+                const prod1 = document.getElementById('pest-prod-1');
+                const prod2 = document.getElementById('pest-prod-2');
+                const prod3 = document.getElementById('pest-prod-3');
+                
+                const outcomeUse = document.getElementById('disease-outcome-use');
+                const outcomeRec = document.getElementById('disease-outcome-rec');
+                const outcomePrev = document.getElementById('disease-outcome-prev');
+                
+                if (selectedPathology === 'tomato') {
+                    outcomeName.innerText = "Leaf Spot (Septoria)";
+                    outcomeConf.innerText = "94%";
+                    
+                    prod1.innerText = "FunguGard Bio";
+                    prod2.innerText = "Shield Neem Concentrate";
+                    prod3.innerText = "Copper-Hydro 50";
+                    
+                    outcomeUse.innerText = "Apply at 10-day intervals. Dissolve 25g powder in 15L clean sprayer tank.";
+                    outcomeRec.innerText = "Average recovery within 10-14 days. Monitor for new foliage spots.";
+                    outcomePrev.innerHTML = `
+                        <li>Prune yellow lower branches</li>
+                        <li>Drip irrigate to avoid wet foliage</li>
+                        <li>Space rows at least 45cm apart</li>
+                    `;
+                } else if (selectedPathology === 'paddy') {
+                    outcomeName.innerText = "Paddy Leaf Blast";
+                    outcomeConf.innerText = "91%";
+                    
+                    prod1.innerText = "Tricyclazole 75% WP";
+                    prod2.innerText = "Bio-Shield Pseudomonas";
+                    prod3.innerText = "Hexaconazole 5% EC";
+                    
+                    outcomeUse.innerText = "Spray at the nursery stage or first visual sign of leaf lesions. Ensure uniform spraying.";
+                    outcomeRec.innerText = "Arrests fungus growth in 5-7 days. Re-apply if rains wash out chemicals.";
+                    outcomePrev.innerHTML = `
+                        <li>Avoid excessive Nitrogen dosage</li>
+                        <li>Destroy straw residues after harvesting</li>
+                        <li>Cultivate blast-resistant seeds</li>
+                    `;
+                } else if (selectedPathology === 'corn') {
+                    outcomeName.innerText = "Common Maize Rust";
+                    outcomeConf.innerText = "88%";
+                    
+                    prod1.innerText = "Azoxystrobin Fungicide";
+                    prod2.innerText = "Bio-Fungus Trichoderma";
+                    prod3.innerText = "Propiconazole 25% EC";
+                    
+                    outcomeUse.innerText = "Spray at the tasseling stage when visual rusty pustules emerge. Repeat every 14 days.";
+                    outcomeRec.innerText = "Pathology controlled in 12-16 days. Spreads rapidly in cool mornings.";
+                    outcomePrev.innerHTML = `
+                        <li>Plant high-resistance hybrids</li>
+                        <li>Adopt rigorous crop rotations</li>
+                        <li>Remove volunteer maize seedlings</li>
+                    `;
+                }
+                
+                document.getElementById('disease-results-scanning').style.display = 'none';
+                document.getElementById('disease-results-panel').style.display = 'block';
+                
+                triggerToast('Plant pathology diagnosed! Pesticide remedies rendered. 🧪');
+            }, 1500);
+        }
+
+        function resetDiseaseScreen() {
+            clearSelectedDiseaseSample();
+            document.getElementById('disease-results-panel').style.display = 'none';
+            document.getElementById('disease-results-empty').style.display = 'flex';
+            triggerToast('Cleared plant pathology scan records.', 'warning');
+        }
+
+        // ==============================================
+        // FEATURE 3: FARMER FORUM LOGIC
+        // ==============================================
+        function renderForumFeed() {
+            const container = document.getElementById('forum-feed-container');
+            container.innerHTML = "";
+            
+            // Loop array in reverse to show latest first
+            for (let i = forumPosts.length - 1; i >= 0; i--) {
+                const post = forumPosts[i];
+                
+                const card = document.createElement('div');
+                card.className = "forum-card";
+                card.id = `post-${post.id}`;
+                
+                card.innerHTML = `
+                    <!-- Solved Badge -->
+                    <div style="position: absolute; top: 1.5rem; right: 1.5rem;">
+                        <span class="solved-badge-pill ${post.solved ? 'active' : ''}" id="solved-pill-${post.id}">
+                            <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i> Verified Solved
+                        </span>
+                    </div>
+
+                    <div class="forum-post-header">
+                        <div class="farmer-avatar">${post.avatarInit}</div>
+                        <div class="farmer-info">
+                            <div class="farmer-name">
+                                ${post.author}
+                                ${post.helpful ? `<span class="helpful-badge"><i data-lucide="award" style="width: 12px;"></i> Helpful Farmer</span>` : ''}
+                            </div>
+                            <span class="post-time">Active now • Local delta corridor</span>
+                        </div>
+                    </div>
+
+                    <div class="forum-post-content">
+                        <h4>${post.title}</h4>
+                        <p>${post.body}</p>
+                    </div>
+
+                    <!-- Scientist/Farmer Reply -->
+                    <div class="forum-reply-box">
+                        <div class="replier">
+                            <i data-lucide="message-square" style="width: 12px; height: 12px; color: var(--primary);"></i>
+                            Reply from <strong>${post.replyAuthor}</strong>
+                        </div>
+                        <p>${post.replyContent}</p>
+                    </div>
+
+                    <!-- Controls upvote and mark solved -->
+                    <div class="forum-actions">
+                        <div class="action-btn-group">
+                            <button onclick="upvotePost(${post.id})" class="forum-action-btn ${post.userUpvoted ? 'upvoted' : ''}" id="upvote-btn-${post.id}">
+                                <i data-lucide="arrow-up"></i> Upvote (${post.votes})
+                            </button>
+                        </div>
+                        
+                        <!-- Toggle Solved -->
+                        <button onclick="togglePostSolved(${post.id})" class="forum-action-btn solved-btn">
+                            <i data-lucide="check-square"></i> Toggle Solved
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            }
+            lucide.createIcons();
+        }
+
+        // Trigger user submit new post
+        function handleCreatePost(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('post-title').value;
+            const desc = document.getElementById('post-desc').value;
+            
+            const newPost = {
+                id: forumPosts.length + 1,
+                author: "Farmer Prasad (Telangana)",
+                avatarInit: "P",
+                solved: false,
+                helpful: false,
+                title: title,
+                body: desc,
+                replyAuthor: "Rythu Raksha AI Agent",
+                replyContent: "Analyzing your farm query description parameters... AI recommends scheduling soil nitrogen testing. Adding localized expert panels to suggest optimal treatments.",
+                votes: 0,
+                userUpvoted: false
+            };
+            
+            forumPosts.push(newPost);
+            
+            // Reset fields
+            document.getElementById('new-post-form').reset();
+            
+            // Re-render feed
+            renderForumFeed();
+            
+            // Smooth scroll to the feed
+            document.getElementById(`post-${newPost.id}`).scrollIntoView({ behavior: 'smooth' });
+            
+            triggerToast('Your farm query was published successfully to the Community! 👨🌾');
+        }
+
+        // Upvote posts
+        function upvotePost(id) {
+            const post = forumPosts.find(p => p.id === id);
+            if (!post) return;
+            
+            const btn = document.getElementById(`upvote-btn-${id}`);
+            
+            if (!post.userUpvoted) {
+                post.votes++;
+                post.userUpvoted = true;
+                btn.classList.add('upvoted');
+                triggerToast('Upvoted! Community reputation parameters shared.');
+            } else {
+                post.votes--;
+                post.userUpvoted = false;
+                btn.classList.remove('upvoted');
+                triggerToast('Upvote removed.', 'warning');
+            }
+            
+            renderForumFeed();
+        }
+
+        // Toggle Solved Status
+        function togglePostSolved(id) {
+            const post = forumPosts.find(p => p.id === id);
+            if (!post) return;
+            
+            post.solved = !post.solved;
+            
+            const pill = document.getElementById(`solved-pill-${id}`);
+            if (post.solved) {
+                pill.classList.add('active');
+                triggerToast('Marked as solved! Thanks for clarifying agronomic solutions.');
+            } else {
+                pill.classList.remove('active');
+                triggerToast('Reopened thread.', 'warning');
+            }
+            
+            renderForumFeed();
+        }
+
+        // Simulate custom upvotes on user profile posts to demonstrate unlocked coupon rewards
+        function simulateUpvoteMyPost() {
+            userUpvoteCount++;
+            document.getElementById('user-upvotes-total').innerText = userUpvoteCount;
+            
+            updateReputationMilestones();
+            
+            // Trigger alerts when milestones are reached
+            if (userUpvoteCount === 15) {
+                triggerToast('🎉 Milestone reached! Locked milestones updated.');
+            } else if (userUpvoteCount === 20) {
+                triggerToast('🎉 Incredible! Unlocked milestone: Free Agri Consultation hotline! 📞');
+            } else if (userUpvoteCount === 30) {
+                triggerToast('🏆 Peak Status achieved! Unlocked: Premium Farmer Badge! 🌟');
+            } else {
+                triggerToast('Profile upvotes simulated successfully!');
+            }
+        }
+
+        function updateReputationMilestones() {
+            // Milestone 1 (Coupons): Unlock at >= 10 upvotes
+            const ms1 = document.getElementById('ms-1');
+            const msBadge1 = document.getElementById('ms-badge-1');
+            if (userUpvoteCount >= 10) {
+                ms1.classList.add('unlocked');
+                msBadge1.innerText = "Unlocked";
+            } else {
+                ms1.classList.remove('unlocked');
+                msBadge1.innerText = "Locked";
+            }
+
+            // Milestone 2 (Agri Consultation): Unlock at >= 20 upvotes
+            const ms2 = document.getElementById('ms-2');
+            const msBadge2 = document.getElementById('ms-badge-2');
+            if (userUpvoteCount >= 20) {
+                ms2.classList.add('unlocked');
+                msBadge2.innerText = "Unlocked";
+            } else {
+                ms2.classList.remove('unlocked');
+                msBadge2.innerText = "Locked";
+            }
+
+            // Milestone 3 (Premium Badge): Unlock at >= 30 upvotes
+            const ms3 = document.getElementById('ms-3');
+            const msBadge3 = document.getElementById('ms-badge-3');
+            if (userUpvoteCount >= 30) {
+                ms3.classList.add('unlocked');
+                msBadge3.innerText = "Unlocked";
+            } else {
+                ms3.classList.remove('unlocked');
+                msBadge3.innerText = "Locked";
+            }
+        }
+    </script>
+</body>
+</html>
